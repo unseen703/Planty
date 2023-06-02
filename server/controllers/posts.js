@@ -1,10 +1,46 @@
 import mongoose from "mongoose";
 import PostMessage from "../models/postMessage.js";
+// import { LOGOUT } from "../../front_end/src/constants/actionTypes.js";
+
+export const getPost = async (req, res) => {
+  const { id } = req.params;
+  // console.log(id);
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send("No Post with given path exists");
+    // console.log("valid id");
+    const post = await PostMessage.findById(id);
+    // console.log(post);
+    // console.log(res);
+    res.status(200).json(post);
+    
+  } catch (error) {
+
+    res.status(404).json({ message: error });
+  }
+};
 
 export const getPosts = async (req, res) => {
+  const { page } = req.query;
   try {
-    const postMessages = await PostMessage.find();
-    res.status(200).json(postMessages);
+    const postPerPage = 8;
+    const startIndex = (Number(page) - 1) * postPerPage; // start  of each page
+    const total = await PostMessage.countDocuments({});
+    const posts = await PostMessage.find()
+      .sort({ _id: -1 }) // newest posts first
+      .limit(postPerPage) // selects first 8 posts
+      .skip(startIndex); // skips posts of previous pages
+     
+    
+    res
+      .status(200)
+      .json({
+        data: posts,
+        currentPage: Number(page),
+        numberOfPages: Math.ceil(total / postPerPage),
+      });
+      // console.log(res);
   } catch (err) {
     res.status(404).json(err);
   }
@@ -12,15 +48,21 @@ export const getPosts = async (req, res) => {
 
 // params /posts/123 -> :id =123
 // Query -> /posts?page= 1->page =1
+
 export const getPostsBySearch = async (req, res) => {
+  // console.log("reached search query");
+
   const { searchQuery, tags } = req.query;
+
   try {
     const title = new RegExp(searchQuery, "i"); // Test TEST test
+    //
     const posts = await PostMessage.find({
       $or: [{ title }, { tags: { $in: tags.split(",") } }],
     });
+// console.log(posts);
+    res.json({ data: posts });
 
-    res.json({data :posts}) ;
   } catch (err) {
     res.status(404).json(err);
   }
@@ -78,16 +120,15 @@ export const likePost = async (req, res) => {
   try {
     const post = await PostMessage.findById(id);
     const index = post.likes.findIndex((id) => id === req.userId);
-
+    // post.likes = [];
     if (index === -1) {
       // like the post
-      // console.log(post.likes);
+      // console.log(index);
       post.likes.push(req.userId);
     } else {
       // dislike the post
-      // console.log(post.likes);
+
       post.likes = post.likes.filter((id) => id != req.userId);
-      // console.log(post.likes);
     }
 
     const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
@@ -102,7 +143,7 @@ export const likePost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
   const { id } = req.params;
-
+``
   try {
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send("No Post with given path exists");
@@ -113,3 +154,15 @@ export const deletePost = async (req, res) => {
     console.log(error);
   }
 };
+
+export const addComment = async (req, res)=>{
+  const { id } = req.params;
+  const{comment} = req.body;
+
+    const post = await PostMessage.findById(id);
+    post.comments.push(comment);
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {new:true});
+
+    res.json(updatedPost);
+  
+}

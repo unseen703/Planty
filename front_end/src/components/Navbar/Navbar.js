@@ -15,7 +15,7 @@ const Navbar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const history = useHistory();
   const location = useLocation();
-  // console.log(user);
+
 
   const logout = () => {
     dispatch({ type: "LOGOUT" });
@@ -41,16 +41,17 @@ const Navbar = () => {
           className={classes.image}
           src={memoriesLogo}
           component={Link}
-          to="/"
+          to="/posts"
           alt="icon"
           height="60"
         />
         <img
           className={classes.image}
-          src={memoriesText}
+          // onClick={ history.push('/')}
           component={Link}
-          to="/"
+          to="/posts"
           alt="icon"
+          src={memoriesText}
           height="60"
         />
       </div>

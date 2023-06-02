@@ -9,7 +9,7 @@ import {
   Button,
 } from "@material-ui/core";
 import { useHistory, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import useStyles from "./styles";
 import { getPosts ,getPostsBySearch} from "../../actions/posts";
@@ -33,10 +33,7 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log("get podts");
-    dispatch(getPosts());
-  }, [currId, dispatch]);
+ 
   const handleAdd = (tag) => {
     setTags([...tags, tag]);
   };
@@ -45,10 +42,10 @@ const Home = () => {
   };
   const searchPost = () => {
     if (search.trim() || tags) {
-      // dispatcdih -> fetch searched posts
+      // dispatch -> fetch searched posts
       dispatch(getPostsBySearch({search, tags:tags.join(",")}));
 
-      histrory.push(`/posts/search?searchQuery= ${search || 'none'}&tags=${tags.join(',')}`);
+      histrory.push(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
     } else {
       histrory.push(`/`);
     }
@@ -70,10 +67,10 @@ const Home = () => {
             alignItems="stretch"
             spacing={3}
           >
-            <Grid key="1" item xs={12} sm={6} md={9}>
+            <Grid  item xs={12} sm={6} md={9}>
               <Posts setCurrId={setCurrId} />
             </Grid>
-            <Grid key="2" item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <AppBar
                 className={classes.appBarSearch}
                 position="static"
@@ -92,13 +89,15 @@ const Home = () => {
                   }}
                 />
                 <ChipInput
+                  className={classes.search}
                   name="tags"
-                  style={{ margin: "10px 0" }}
+                  variant="outlined"
+                  label="Search Tags"
+                  fullWidth
                   value={tags}
+                  style={{ margin: "10px 0" }}
                   onAdd={handleAdd}
                   onDelete={handleDelete}
-                  label="Search Tags"
-                  // variant="outlined"
                 />
                 <Button
                   onClick={searchPost}
@@ -110,9 +109,11 @@ const Home = () => {
                 </Button>
               </AppBar>
               <Form currId={currId} setCurrId={setCurrId} />
-              <Paper elevation={6}>
-                <Pagination />
+              {(!searchQuery && !tags.length) && (
+              <Paper className={classes.pagination} elevation={6}>
+                <Pagination page={page} />
               </Paper>
+            )}
             </Grid>
           </Grid>
         </Container>

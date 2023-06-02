@@ -46,7 +46,7 @@ const Auth = () => {
       dispatch(signup(formData , history));
       
     } else{
-      // console.log(formData);
+    
       dispatch(signin(formData, history));
 
     }
@@ -69,9 +69,8 @@ const Auth = () => {
     const decoded = res.credential;
     const result = jwt_decode(decoded);
     const token = res?.credential;
-    //  const user = result.profileObj;
-     console.log(result);
-    // var result1 = console.log(res);
+  
+    
     try {
       dispatch({ type: AUTH, data: { result, token } });
       history.push("/");

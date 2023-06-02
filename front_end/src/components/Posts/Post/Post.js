@@ -8,45 +8,38 @@ import {
   CardContent,
   Button,
   Typography,
+  ButtonBase,
 } from "@material-ui/core";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { useDispatch } from "react-redux";
-
 import useStyles from "./styles";
 import { deletePost, likePost } from "../../../actions/posts";
+import { useHistory } from "react-router-dom";
 
 const Post = ({ post, setCurrId }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
-  const [likes, setLikes] = useState(post?.likes);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
+  const [likes, setLikes] = useState(post?.likes);
 
-  let userId  = user?.result?.sub || user?.result?._id;
-  
-  // if(user.token.length >500){
-  //   userId =user?.result.sub;
-  // }
-  // else{
-    
-  //   userId = user?.result?.id;
-  // }
+  let userId = user?.result?.sub || user?.result?._id;
+
   const hasLikedPost = post.likes.find((like) => like === userId);
 
   const handleLike = async () => {
-
     dispatch(likePost(post._id));
-    // console.log(post._id);
-    console.log(post.likes);
+
     if (hasLikedPost) {
       setLikes(post.likes.filter((id) => id !== userId));
     } else {
       setLikes([...post.likes, userId]);
     }
   };
-  // String(req.userId)
+
   const Likes = () => {
     if (likes.length > 0) {
       return likes.find((like) => like === userId) ? (
@@ -73,14 +66,19 @@ const Post = ({ post, setCurrId }) => {
     );
   };
 
+  const gotoPost = ()=>{
+    history.push(`/posts/${post._id}`);
+  }
   return (
     <Card className={classes.card} raised elevation={6}>
+    <ButtonBase className={classes.cardAction}    onClick={gotoPost}>
       <CardMedia
         className={classes.media}
         image={post.selectedFiles}
         alt={post.title}
         title={post.title}
       />
+        </ButtonBase>
       <div className={classes.overlay}>
         <Typography variant="h6"> {post.name} </Typography>
         <Typography variant="body2">
@@ -89,9 +87,9 @@ const Post = ({ post, setCurrId }) => {
         </Typography>
         {/* <Typography variant='h6' >        {post.creator}          </Typography>  */}
       </div>
+    
       <div className={classes.overlay2}>
-        {(user?.result?.sub === post?.creator ||
-          user?.result?.id === post?._id) && (
+        {post?.creator === userId && (
           <Button
             style={{ color: "white" }}
             size="small"
@@ -113,7 +111,6 @@ const Post = ({ post, setCurrId }) => {
         {" "}
         {post.title}
         {/* {user.result.googleId} */}
-
       </Typography>
       <CardContent>
         <Typography variant="body2" color="textSecondary">
@@ -121,7 +118,7 @@ const Post = ({ post, setCurrId }) => {
           {post.message}{" "}
         </Typography>
       </CardContent>
-
+      
       <CardActions className={classes.cardActions}>
         <Button
           size="small"
@@ -131,20 +128,20 @@ const Post = ({ post, setCurrId }) => {
         >
           <Likes />
         </Button>
-        {(user?.result?.sub === post?.creator ||
-          user?.result?.id === post?.creator) && (
 
+        {post?.creator === userId && (
           <Button
             size="small"
             color="primary"
             onClick={() => dispatch(deletePost(post._id))}
           >
-          {/* {user?.result?.sub} */}
+     
             <DeleteIcon fontSize="small" />
             Delete
           </Button>
         )}
       </CardActions>
+   
     </Card>
   );
 };

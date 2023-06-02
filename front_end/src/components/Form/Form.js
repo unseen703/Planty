@@ -6,13 +6,15 @@ import FileBase from "react-file-base64";
 import { useDispatch } from "react-redux";
 
 import useStyles from "./styles";
-import { createPost, updatePost } from "../../actions/posts";
+import { createPost, getPosts, updatePost } from "../../actions/posts";
+import { useHistory } from "react-router-dom";
 
 const Form = ({ currId, setCurrId }) => {
-  const post = useSelector((state) =>
-    currId ? state.posts.find((p) => (p._id === currId)) : null
+
+  const post = useSelector((state) => 
+    currId ? state.posts.posts.find((p) => p._id === currId) : null
   );
-  const user = JSON.parse(localStorage.getItem('profile'))
+  const user = JSON.parse(localStorage.getItem("profile"));
 
   const [postData, setPostData] = useState({
     name: "",
@@ -23,7 +25,7 @@ const Form = ({ currId, setCurrId }) => {
   });
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const history = useHistory();
   useEffect(() => {
     if (post) setPostData(post);
   }, [post]);
@@ -31,41 +33,40 @@ const Form = ({ currId, setCurrId }) => {
     e.preventDefault();
 
     if (currId) {
-      // console.log(postData);
-      dispatch(updatePost(currId, {...postData, name: user?.result?.name}));
-      
+ 
+      dispatch(updatePost(currId, { ...postData, name: user?.result?.name }));
+      clear();
     } else {
-      // console.log(postData);
-
-      dispatch(createPost({...postData, name: (user?.result?.name)}));
-      // postData.tags.map((tag)=>{console.log(tag);});
+      dispatch(createPost({ ...postData, name: user?.result?.name }, history));
+      clear();
+      
+      
     }
-    clear();
   };
-  if(!user?.result?.name){
-    return(
+  if (!user?.result?.name) {
+    return (
       <Paper className={classes.paper}>
-      <Typography variant="h6" align= "center">
-      plese Sign in to Create Your own posts
-      </Typography>
+        <Typography variant="h6" align="center">
+          plese Sign in to Create Your own posts
+        </Typography>
       </Paper>
-    )
+    );
   }
   const clear = () => {
     {
-    
-    setCurrId(null);
-    setPostData({
-      title: "",
-      message: "",
-      tags: [],
-      selectedFiles: "",
-    });
-  };}
+      setCurrId(null);
+      setPostData({
+        title: "",
+        message: "",
+        tags: [],
+        selectedFiles: "",
+      });
+    }
+  };
 
   return (
     // <Typography varaint = "h1" > form </Typography>
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={6}>
       <Typography variant="h6">
         {" "}
         {currId ? "Editing" : "Creating"} a Memory
@@ -77,7 +78,6 @@ const Form = ({ currId, setCurrId }) => {
         method={`post`}
         // onSubmit=
       >
-       
         <TextField
           name="title"
           // varient="outlined"
@@ -103,7 +103,9 @@ const Form = ({ currId, setCurrId }) => {
           label="Tags"
           fullwidth="true"
           value={postData.tags}
-          onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })}
+          onChange={(e) =>
+            setPostData({ ...postData, tags: e.target.value.split(",") })
+          }
         />
         <div className={classes.fileInput}>
           {" "}
