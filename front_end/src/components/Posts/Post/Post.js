@@ -67,7 +67,9 @@ const Post = ({ post, setCurrId }) => {
   };
 
   const gotoPost = () => {
+
     history.push(`/posts/${post._id}`);
+    // history.push("/");
   };
   return (
     <Card className={classes.card} raised elevation={6}>

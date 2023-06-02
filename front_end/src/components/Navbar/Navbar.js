@@ -17,10 +17,11 @@ const Navbar = () => {
   const location = useLocation();
 
   const logout = () => {
-    history.push("/auth");
     setUser(null);
+    history.push("/");
     dispatch({ type: "LOGOUT" });
   };
+
   useEffect(() => {
     const token = user?.token;
 
@@ -32,26 +33,24 @@ const Navbar = () => {
     }
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location]);
+  
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
-      <div className={classes.brandContainer}>
+      <Link to="/" className={classes.brandContainer}>
+        <img
+          component={Link}
+          to="/"
+          src={memoriesText}
+          alt="icon"
+          height="45px"
+        />
         <img
           className={classes.image}
           src={memoriesLogo}
-          component={Link}
-          to="/posts"
           alt="icon"
-          height="60"
+          height="40px"
         />
-        <img
-          className={classes.image}
-          component={Link}
-          to="/posts"
-          alt="icon"
-          src={memoriesText}
-          height="60"
-        />
-      </div>
+      </Link>
       <Toolbar className={classes.toolbar} varient="dense">
         {user ? (
           <div className={classes.profile}>
@@ -71,7 +70,7 @@ const Navbar = () => {
               variant="contained"
               color="secondary"
               onClick={logout}
-              to ="/auth"
+              to="/auth"
             >
               Logout
             </Button>

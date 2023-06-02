@@ -4,19 +4,15 @@ import PostMessage from "../models/postMessage.js";
 
 export const getPost = async (req, res) => {
   const { id } = req.params;
-  // console.log(id);
 
   try {
     if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send("No Post with given path exists");
-    // console.log("valid id");
-    const post = await PostMessage.findById(id);
-    // console.log(post);
-    // console.log(res);
-    res.status(200).json(post);
-    
-  } catch (error) {
+      return res.status(404).send("No Post with given path exists");
 
+    const post = await PostMessage.findById(id);
+
+    res.status(200).json(post);
+  } catch (error) {
     res.status(404).json({ message: error });
   }
 };
@@ -31,16 +27,12 @@ export const getPosts = async (req, res) => {
       .sort({ _id: -1 }) // newest posts first
       .limit(postPerPage) // selects first 8 posts
       .skip(startIndex); // skips posts of previous pages
-     
-    
-    res
-      .status(200)
-      .json({
-        data: posts,
-        currentPage: Number(page),
-        numberOfPages: Math.ceil(total / postPerPage),
-      });
-      // console.log(res);
+
+    res.status(200).json({
+      data: posts,
+      currentPage: Number(page),
+      numberOfPages: Math.ceil(total / postPerPage),
+    });
   } catch (err) {
     res.status(404).json(err);
   }
@@ -50,8 +42,6 @@ export const getPosts = async (req, res) => {
 // Query -> /posts?page= 1->page =1
 
 export const getPostsBySearch = async (req, res) => {
-  // console.log("reached search query");
-
   const { searchQuery, tags } = req.query;
 
   try {
@@ -60,9 +50,8 @@ export const getPostsBySearch = async (req, res) => {
     const posts = await PostMessage.find({
       $or: [{ title }, { tags: { $in: tags.split(",") } }],
     });
-// console.log(posts);
-    res.json({ data: posts });
 
+    res.json({ data: posts });
   } catch (err) {
     res.status(404).json(err);
   }
@@ -78,7 +67,7 @@ export const createPost = async (req, res) => {
 
   try {
     await newPost.save();
-    console.log("done");
+
     res.status(201).json(newPost);
   } catch (error) {
     res.status(409).json({ error });
@@ -123,7 +112,7 @@ export const likePost = async (req, res) => {
     // post.likes = [];
     if (index === -1) {
       // like the post
-      // console.log(index);
+
       post.likes.push(req.userId);
     } else {
       // dislike the post
@@ -143,7 +132,7 @@ export const likePost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
   const { id } = req.params;
-``
+  ``;
   try {
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send("No Post with given path exists");
@@ -155,14 +144,18 @@ export const deletePost = async (req, res) => {
   }
 };
 
-export const addComment = async (req, res)=>{
+export const addComment = async (req, res) => {
   const { id } = req.params;
-  const{comment} = req.body;
-
+  const { comment } = req.body;
+  try {
     const post = await PostMessage.findById(id);
     post.comments.push(comment);
-    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {new:true});
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
+      new: true,
+    });
 
     res.json(updatedPost);
-  
-}
+  } catch (error) {
+    console.log(error);
+  }
+};

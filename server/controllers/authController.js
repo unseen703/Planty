@@ -21,7 +21,7 @@ export const signIn = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials." });
     // generate jwt token for signing user
     const token = generateToken(user);
-    console.log(token);
+
 
     res.status(200).json({ result: user, token });
   } catch (err) {
@@ -53,14 +53,13 @@ export const signUp = async (req, res) => {
     const token = generateToken(result);
 
     if (!token) res.status(500).json({ message: "token not generated" });
-    // console.log(token);
+
 
     res.status(201).json({ result, token });
 
   } catch (error) {
 
-    res.status(500).json({ message: "Something went wrong" });
+    res.status(500).json({ message: error });
 
-    // console.log(error);
   }
 };

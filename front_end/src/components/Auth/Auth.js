@@ -41,7 +41,6 @@ const Auth = () => {
     e.preventDefault();
     const data = formData;
 
-    // setFormData(initialState);
     if (isSignup) {
       dispatch(signup(formData, history));
     } else {

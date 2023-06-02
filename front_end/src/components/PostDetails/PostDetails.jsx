@@ -24,7 +24,7 @@ const PostDetails = () => {
   const { id } = useParams();
   useEffect(() => {
     dispatch(getPost(id));
-    if(!post)return "no posts found";
+  
   }, [id]);
 
   useEffect(()=>{
