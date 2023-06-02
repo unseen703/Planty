@@ -16,10 +16,9 @@ const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
 
-
   const logout = () => {
     dispatch({ type: "LOGOUT" });
-    history.push("/");
+    history.push("/auth");
     setUser(null);
   };
   useEffect(() => {
@@ -36,7 +35,6 @@ const Navbar = () => {
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
       <div className={classes.brandContainer}>
-        
         <img
           className={classes.image}
           src={memoriesLogo}
@@ -47,7 +45,6 @@ const Navbar = () => {
         />
         <img
           className={classes.image}
-          // onClick={ history.push('/')}
           component={Link}
           to="/posts"
           alt="icon"

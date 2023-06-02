@@ -38,7 +38,7 @@ const PostDetails = () => {
   
   if(!post)return "no posts found";
   const openPost = (_id)=>{
-    history.push(`/posts/${_id}`);
+    history.push(`/posts/${post._id}`);
   }
 
   // console.log(post);

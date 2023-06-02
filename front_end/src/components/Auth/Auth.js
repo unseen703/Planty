@@ -15,9 +15,9 @@ import {
 } from "@material-ui/core";
 
 import useStyles from "./styles";
-import { AUTH } from '../../constants/actionTypes';
+import { AUTH } from "../../constants/actionTypes";
 import Input from "./Input";
-import {signup, signin} from '../../actions/auth.js'
+import { signup, signin } from "../../actions/auth.js";
 
 const initialState = {
   firstName: "",
@@ -35,20 +35,17 @@ const Auth = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const handleShowPassword = () =>    setShowPassword(!showPassword);
+  const handleShowPassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = formData;
 
     // setFormData(initialState);
-    if(isSignup){
-      dispatch(signup(formData , history));
-      
-    } else{
-    
+    if (isSignup) {
+      dispatch(signup(formData, history));
+    } else {
       dispatch(signin(formData, history));
-
     }
   };
 
@@ -69,8 +66,7 @@ const Auth = () => {
     const decoded = res.credential;
     const result = jwt_decode(decoded);
     const token = res?.credential;
-  
-    
+
     try {
       dispatch({ type: AUTH, data: { result, token } });
       history.push("/");
@@ -90,7 +86,6 @@ const Auth = () => {
           <Grid container spacing={2}>
             {isSignup && (
               <>
-                {/* <Grid xs ={6} md = {13}> */}
                 <Input
                   name="firstName"
                   label="First Name"
@@ -104,7 +99,6 @@ const Auth = () => {
                   handleChange={handleChange}
                   half
                 />
-
               </>
             )}
             <Input
@@ -143,17 +137,12 @@ const Auth = () => {
           <Grid container justifyContent="center">
             <Grid item>
               <GoogleLogin
-                // onClick={() => login()}
                 text="signin"
-                // size="large"
                 className={classes.googleButton}
                 theme="filled_blue"
                 shape="rectangular"
-                // locale= "zh_CN"
-
                 onSuccess={googleSuccsess}
                 onFailure={googleFailure}
-                // cookiePolicy="single_host_origin"
               />
             </Grid>
           </Grid>

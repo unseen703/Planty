@@ -24,7 +24,7 @@ const useQuery = () => {
 // import memories from "../../images/memories.png";
 const Home = () => {
   const classes = useStyles();
-  const histrory = useHistory();
+  const history = useHistory();
   const query = useQuery();
   const page = query.get("page") || 1;
   const searchQuery = query.get("searchQuery");
@@ -41,13 +41,13 @@ const Home = () => {
     setTags(tags.filter((t) => t !== tag));
   };
   const searchPost = () => {
-    if (search.trim() || tags) {
+    if (search.length != 0 || tags.length != 0) {
       // dispatch -> fetch searched posts
       dispatch(getPostsBySearch({search, tags:tags.join(",")}));
 
-      histrory.push(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
+      history.push(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
     } else {
-      histrory.push(`/`);
+      history.push(`/`);
     }
   };
   const handleKeyPress = (e) => {
@@ -55,6 +55,10 @@ const Home = () => {
       searchPost();
       // histrory.push(`/search/${searchQuery}`);
     }
+  };
+  const clear = () => {
+    setTags([]);
+    setSearch("");
   };
   return (
     <div>
@@ -106,6 +110,15 @@ const Home = () => {
                   variant="contained"
                 >
                   Search
+                </Button>
+                <Button
+                  onClick={clear}
+                  style={{ marginTop: "2px"}}
+                  className={classes.searchButton}
+                  color="primary"
+                  variant="contained"
+                >
+                  clear
                 </Button>
               </AppBar>
               <Form currId={currId} setCurrId={setCurrId} />

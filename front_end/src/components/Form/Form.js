@@ -6,7 +6,7 @@ import FileBase from "react-file-base64";
 import { useDispatch } from "react-redux";
 
 import useStyles from "./styles";
-import { createPost, getPosts, updatePost } from "../../actions/posts";
+import { createPost, updatePost } from "../../actions/posts";
 import { useHistory } from "react-router-dom";
 
 const Form = ({ currId, setCurrId }) => {
