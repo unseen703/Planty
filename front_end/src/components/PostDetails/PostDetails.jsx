@@ -36,7 +36,7 @@ const PostDetails = () => {
 
   const recommendedPosts = posts.filter((post1)=> post1._id != id );
   
-  if(!post)return "no posts found";
+  if(!post)return ( <h6>no posts found</h6>);
   const openPost = (_id)=>{
     history.push(`/posts/${post._id}`);
   }
