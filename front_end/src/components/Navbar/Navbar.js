@@ -5,7 +5,7 @@ import useStyles from "./styles";
 import decode from "jwt-decode";
 // import { } from "react-router-dom";
 
-import memories from "../../images/memories.png";
+// import memories from "../../images/memories.png";
 import memoriesLogo from "../../images/memoriesLogo.png";
 import memoriesText from "../../images/memoriesText.png";
 import { useDispatch } from "react-redux";
@@ -71,6 +71,7 @@ const Navbar = () => {
               variant="contained"
               color="secondary"
               onClick={logout}
+              to ="/auth"
             >
               Logout
             </Button>

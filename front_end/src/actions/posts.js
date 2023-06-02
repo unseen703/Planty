@@ -24,9 +24,8 @@ export const getPosts = (page) => async (dispatch )=>{
     // so we will use redux thunk , which allows us to specify additional asyncronus function
     
     dispatch( {type:START_LOADING});
-    const post = await api.fetchPosts(page);
-    // console.log(post);
-    const data = post.data;
+    const {data} = await api.fetchPosts(page);
+
     dispatch( {type:FETCH_ALL, payload : data});
     dispatch( {type:END_LOADING});
     } catch(err){
