@@ -17,9 +17,9 @@ const Navbar = () => {
   const location = useLocation();
 
   const logout = () => {
-    dispatch({ type: "LOGOUT" });
     history.push("/auth");
     setUser(null);
+    dispatch({ type: "LOGOUT" });
   };
   useEffect(() => {
     const token = user?.token;
