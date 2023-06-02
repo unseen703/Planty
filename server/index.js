@@ -18,7 +18,7 @@ app.use(cors());
 app.use('/posts',  postRoutes   );
 app.use('/users', userRoutes );
 
-// app.use('./posts', postRoutes );s
+app.use('./posts', (req, res)=>{ console.log("APP IS RUNNING");} );
 
 
 const PORT = process.env.PORT || 5000;
