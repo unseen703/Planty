@@ -15,7 +15,7 @@ if(!posts.length && !isLoading) return 'No posts';
     return (
         // loading spinner.
         isLoading?<CircularProgress/>:(
-            <Grid className= { classes.container} container alignItems='stretch' spacing = {3}>
+            <Grid className= { classes.maincontainer} container alignItems='stretch' spacing = {3}>
                {posts.map((post, index)=>(
                 <Grid key={index} item  xs={12} sm= {12} md = {6} lg= {3}>
                     <Post   post = {post}  setCurrId = {setCurrId} />
