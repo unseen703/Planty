@@ -87,6 +87,7 @@ const PostDetails = () => {
               src={post.selectedFiles}
               alt={post.title}
             />
+            
           </div>
         </div>
       </Paper>
@@ -96,7 +97,7 @@ const PostDetails = () => {
             You might also Like:
           </Typography>
           <Divider />
-          <Grid container className={classes.mainContainer} alignItems="center" spacing={3}>
+          <Grid container className={classes.mainContainer} spacing={3}>
             
               {recommendedPosts?.map((post, index) => (
                 <Grid key={index} item >

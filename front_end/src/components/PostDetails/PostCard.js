@@ -47,7 +47,7 @@ const PostCard = ({ post }) => {
         </Typography>
       </div>
 
-      <Typography className={classes.title} variant="h5" gutterBottom>
+      <Typography className={classes.rtitle} variant="h5" gutterBottom>
         {post.title}
       </Typography>
       <CardContent>

@@ -5,15 +5,20 @@ export default makeStyles((theme) => ({
     borderRadius: "20px",
     objectFit: "cover",
     width: "100%",
-    maxHeight: "600px",
+    height: "auto",
+   
+    // maxHeight: "600px",
   },
   
   card: {
     display: "flex",
     width: "100%",
+    overflow: "hidden",
     [theme.breakpoints.down("sm")]: {
+      display: "flex",
       flexWrap: "wrap",
       flexDirection: "column",
+      overflow: "hidden",
     },
   },
   section: {
@@ -22,7 +27,12 @@ export default makeStyles((theme) => ({
     flex: 1,
   },
   imageSection: {
+    display: "flex",  
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     marginLeft: "20px",
+  
     [theme.breakpoints.down("sm")]: {
       marginLeft: 0,
     },
@@ -33,6 +43,7 @@ export default makeStyles((theme) => ({
       flexDirection: "column",
     },
   },
+
   loadingPaper: {
     display: "flex",
     justifyContent: "center",
@@ -101,15 +112,19 @@ export default makeStyles((theme) => ({
   },
 
   rcard: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    borderRadius: '15px',
-    height: '100%',
-    // height: "200px",
-    overflowY: "auto",
-    marginRight: "30px",
-    position: 'relative',
+    height: "100%",
+    width: "150px",
+    display: "flex",
+    position: "relative",
+    overflowy: "auto",
+    margin: "5px",
+    borderRadius: "15px",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    [theme.breakpoints.down("sm")]: {
+     justifyContent: "space-around",
+
+    }
   },
   roverlay: {
     position: 'absolute',
@@ -132,8 +147,13 @@ export default makeStyles((theme) => ({
     borderRadius: 15,
     display: 'flex',
     flexDirection: 'row',
+    flexWrap : "row",
     justifyContent: 'space-between',
     alignItems: 'center',
+    [theme.breakpoints.down("sm")]: {
+      alignItems : 'center',
+      justifyContent: 'space-around',
+    }
   },
   rcardAction: {
     display: "block",
