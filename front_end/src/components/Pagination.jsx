@@ -19,6 +19,7 @@ const Paginate = ({ page }) => {
 
   return (
     <Pagination
+    
       classes={{ ul: classes.ul }}
       count={numberofPages}
       page={Number(page) || 1}
