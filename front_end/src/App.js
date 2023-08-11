@@ -19,7 +19,7 @@ const App = () => {
   return (
     <BrowserRouter>
            
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_AUTH0 } >
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_AUTH0 }  allowed_parent_origin ="true">
       <Container maxWidth="xl">
       <Navbar/>
       <Switch>
