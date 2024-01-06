@@ -141,7 +141,7 @@ const Auth = () => {
                 className={classes.googleButton}
                 theme="filled_blue"
                 shape="rectangular"
-                allowed_parent_origin ="true"
+              
                 onSuccess={googleSuccsess}
                 onFailure={googleFailure}
               />
